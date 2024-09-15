@@ -1,0 +1,33 @@
+.tabs-container {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabs-scroll {
+  display: flex;
+  overflow-x: auto;
+  padding: 8px;
+  scrollbar-width: none;
+}
+
+.tabs-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  padding: 8px 16px;
+  margin-right: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.tab:hover {
+  border-color: #ccc;
+}
+
+.active-tab {
+  border-bottom: 0.5px solid black;
+}
