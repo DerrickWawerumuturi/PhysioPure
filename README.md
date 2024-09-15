@@ -29,12 +29,8 @@ To set up the project locally, follow these steps:
 
 3. **Set up environment variables**:
 
-   - Create a `.env.local` file in the root directory.
-   - Add your Appwrite project credentials and other required environment variables as follows:
-     ```bash
-     NEXT_PUBLIC_APPWRITE_PROJECT_ID=your_appwrite_project_id
-     NEXT_PUBLIC_APPWRITE_ENDPOINT=https://your-appwrite-endpoint
-     NEXT_PUBLIC_APPWRITE_DATABASE_ID=your_appwrite_database_id
+   - .env is public for now  `./env` file in the root directory.
+   - 
      ```
 
 4. **Run the development server**:
