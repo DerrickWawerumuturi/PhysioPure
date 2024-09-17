@@ -1,136 +1,85 @@
 "use server";
 
-import { BlogData, UpdateBlogParams } from "@/types";
+import { createPost, updatePost } from "@/types";
 import { createAdminClient } from "../appwrite.config";
 import { ID, Query } from "node-appwrite";
 import { parseStringify } from "../utils";
+import { InputFile } from "node-appwrite/file";
 
 const {
-  APPWRITE_POST_COLLECTION_ID: APPWRITE_POST_ID,
+  APPWRITE_BLOG_COLLECTION_ID: BLOG_COLLECTION_ID,
   APPWRITE_DATABASE_ID: DATABASE_ID,
-  APPWRITE_TAG_COLLECTION_ID: APPWRITE_TAG_ID,
+  APPWRITE_TAG_COLLECTION_ID: TAG_COLLECTION_ID,
+  APPWRITE_STORAGE_ID: STORAGE_ID,
+  NEXT_PUBLIC_APPWRITE_ENDPOINT: ENDPOINT,
+  NEXT_PUBLIC_APPWRITE_PROJECT: PROJECT_ID,
 } = process.env;
 
-//
-
-export const createBlog = async (
-  userId: string,
-  status?: string,
-  content?: string[],
-  title?: string,
-  subtitle?: string
-) => {
+export const createBlogPost = async ({ previewImage, ...data }: createPost) => {
   const { database } = await createAdminClient();
-  if (!database) {
-    console.log("no db to work with");
-  }
+
   try {
-    console.log(userId);
-    const response = await database.createDocument(
+    let file;
+
+    if (previewImage) {
+      const inputFile = InputFile.fromBuffer(
+        previewImage?.get("fileData") as Blob,
+        previewImage?.get("fileName") as string
+      );
+      const { storage } = await createAdminClient();
+      file = await storage.createFile(STORAGE_ID!, ID.unique(), inputFile);
+    }
+
+    const newPost = await database.createDocument(
       DATABASE_ID!,
-      APPWRITE_POST_ID!,
+      BLOG_COLLECTION_ID!,
       ID.unique(),
       {
-        userId,
-        content,
-        status,
-        title,
-        subtitle,
+        previewImageId: file?.$id || null,
+        previewImageUrl: `${ENDPOINT}/storage/buckets/${STORAGE_ID}/files/${file?.$id}/view?project=${PROJECT_ID}`,
+        ...data,
       }
     );
-    if (!response) {
-      console.log("no response");
-    }
-    const id: string = String(response.$id);
-    return {
-      id: id,
-    };
+    return parseStringify(newPost);
   } catch (error) {
-    console.error("errror saving post", error);
-    throw error;
+    console.log("could not create a post");
   }
 };
 
-export const getBlog = async (blogId: string) => {
+export const updateBlogPost = async (data: updatePost) => {
   const { database } = await createAdminClient();
+
   try {
-    const blog = await database.getDocument(
+    const updatedPost = await database.updateDocument(
       DATABASE_ID!,
-      APPWRITE_POST_ID!,
-      blogId
+      BLOG_COLLECTION_ID!,
+      data.postId,
+      data.updatedContent
     );
-    return parseStringify(blog);
+    return parseStringify(updateBlogPost);
   } catch (error) {
-    console.log("Error getting blog => blog.actions.ts");
+    console.log("could not update post");
   }
 };
 
-export const updateBlog = async (
-  blogId: string,
-  status?: string,
-  content?: string[],
-  title?: string,
-  subtitle?: string,
-  userId?: string
-) => {
-  try {
-    const { database } = await createAdminClient();
-
-    const updateData: Record<string, any> = {};
-    if (status !== undefined) updateData.status = status;
-    if (content !== undefined) updateData.content = content;
-    if (title !== undefined) updateData.title = title;
-    if (subtitle !== undefined) updateData.subtitle = subtitle;
-
-    // if there is no blog
-
-    if (!blogId) {
-      console.log("new blog then");
-      console.log(userId);
-      const newBlog = await createBlog(
-        userId!,
-        status,
-        content,
-        title!,
-        subtitle!
-      );
-      console.log("new blog made");
-      return parseStringify(newBlog.id);
-
-      // Update blog
-    } else if (Object.keys(updateData).length > 0) {
-      console.log(blogId);
-      const result = await database.updateDocument(
-        DATABASE_ID!,
-        APPWRITE_POST_ID!,
-        blogId,
-        updateData
-      );
-      console.log(result);
-      return parseStringify(result);
-    } else {
-      console.log("nothing to update or an error occured");
-    }
-  } catch (error) {
-    console.log("failed trying to update  blog, blog.actions.ts", error);
-  }
-};
-
-export const totalBlogs = async () => {
+export const getAllPosts = async () => {
   const { database } = await createAdminClient();
   try {
     const blogs = await database.listDocuments(
       DATABASE_ID!,
-      APPWRITE_POST_ID!,
-      [Query.orderDesc("$createdAt")]
+      BLOG_COLLECTION_ID!,
+      [Query.orderDesc("updatedAt")]
     );
-  } catch (error) {}
+    return parseStringify(blogs.documents);
+  } catch (error) {
+    console.log("could not get blogs");
+  }
 };
 
 export const getAllTags = async () => {
   const { database } = await createAdminClient();
   try {
-    const tags = await database.listDocuments(DATABASE_ID!, APPWRITE_TAG_ID!);
+    const tags = await database.listDocuments(DATABASE_ID!, TAG_COLLECTION_ID!);
     console.log(tags);
     return parseStringify(tags);
   } catch (error) {
@@ -144,7 +93,7 @@ export const createTag = async (tag: string) => {
   try {
     const createTags = await database.createDocument(
       DATABASE_ID!,
-      APPWRITE_TAG_ID!,
+      TAG_COLLECTION_ID!,
       ID.unique(),
       tag
     );
@@ -154,4 +103,4 @@ export const createTag = async (tag: string) => {
   }
 };
 
-// redine the structure of creating a blog
+// redine

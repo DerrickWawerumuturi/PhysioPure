@@ -5,21 +5,24 @@ import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import FileUploader from './FileUploader';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
-import { createTag, getAllTags, updateBlog } from '@/lib/actions/blog.actions';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Input } from './ui/input';
 import { ID } from 'node-appwrite';
+import { createBlogPost, createTag, getAllTags, updateBlogPost } from '@/lib/actions/blog.actions';
+import { Block, BlockNoteEditor } from '@blocknote/core';
+import { createPost } from '@/types';
+import { generateSlug, simplifyContent } from '@/lib/utils';
+import Success from './Success';
 
 interface TagSelectionDialogProps {
     open: boolean;
+    editor: BlockNoteEditor
     onClose: () => void;
-    onTagSelect: (tag: string) => void;
     blogId: string;
-    onClick: () => void;
+    blocks: Block[],
+    setBlocks: (block: Block[]) => void
     isLoading: boolean;
-    isDraftSaved: boolean;
-    errorMessage: string;
     title: string;
     subtitle: string;
     setTitle: (newValue: string) => void;
@@ -28,95 +31,89 @@ interface TagSelectionDialogProps {
 }
 
 const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
-    open, onClose, onTagSelect, blogId,
-    onClick, isLoading, setIsLoading, isDraftSaved, errorMessage,
-    title, subtitle, setTitle, setSubtitle
+    open, onClose, isLoading, setIsLoading, blocks, setBlocks,
+    title, subtitle, setTitle, setSubtitle, editor
 }) => {
     const router = useRouter();
-    const [tags, setTags] = useState<any[]>([]);
     const [newTag, setNewTag] = useState<string>('general');
-    const [selectedTag, setSelectedTag] = useState<string | null>(newTag);
     const [files, setFiles] = useState<File[]>([]);
     const [user, setUser] = useState<any>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [published, setPublished] = useState(false)
+    const [postId, setPostId] = useState(null)
+    const [success, setSuccess] = useState(false)
+
+
+    // declare interface createPost {
+    //     title: string;
+    //     slug: string;
+    //     authorId: string;
+    //     content: string;
+    //     tags: string[];
+    //     published: boolean;
+    //     createdAt: Date;
+    //     updatedAt: Date;
+    //   }
 
     useEffect(() => {
-        if (open) {
-            const loadTags = async () => {
-                try {
-                    const fetchedTags = await getAllTags();
-                    setTags(fetchedTags);
-                } catch (error) {
-                    console.error('Failed to fetch tags:', error);
-                }
-            };
-            loadTags();
+        const getUser = async () => {
+            const user = await getLoggedInUser()
+            setUser(user)
         }
-    }, [open]);
+        getUser()
+    }, [])
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const userParams = await getLoggedInUser();
-                setUser(userParams);
-            } catch (error) {
-                console.error('Failed to fetch user:', error);
-            }
-        };
-        fetchUser();
-    }, []);
+    const handleBlog = async () => {
+        // svae the blog to database, making sure to add he title and subtitle or preview from alert content
+        const userId = user.$id
+        const createdAt = new Date()
+        const updatedAt = new Date()
 
-    const handleAddTag = async () => {
-        if (newTag.trim()) {
-            try {
-                await createTag(newTag.trim());
-                setTags(prevTags => [...prevTags, { name: newTag.trim() }]);
-                setNewTag('');
-                toast.message("tag created")
-            } catch (error) {
-                console.error('Failed to add tag:', error);
-            }
+        const blocks = editor.document
+        setPublished(true)
+        const slug = generateSlug(title, user?.username)
+
+        let formData;
+        const content = simplifyContent(blocks)
+
+        if (
+            files && files.length > 0
+        ) {
+            const fileData = new Blob([files[0]], {
+                type: files[0].type
+            })
+            formData = new FormData()
+            formData.append("fileData", fileData)
+            formData.append("fileName", files[0].name)
         }
-    };
 
-    const handleTagSelect = (tagId: string) => {
-        setSelectedTag(tagId);
-    };
-
-    const handleSelectTag = async () => {
-        console.log(selectedTag)
-        if (selectedTag) {
-            try {
-                console.log("selected blog id", blogId)
-                const result = await updateBlog(blogId, "published", undefined, title, subtitle);
-                onTagSelect(selectedTag);
-                onClose();
-                console.log(result)
-                return result
-            } catch (error) {
-                console.error('Failed to update blog:', error);
-                return true;
-            }
-        }
-    };
-
-    const handlePublish = async () => {
-        setIsLoading(true);
         try {
-            const result = await handleSelectTag();
-            console.log(result)
-            if (result) {
-                toast.success("Blog published successfully");
-                setTimeout(() => router.push("/"), 1000);
-            } else {
-                toast.error("Failed to publish blog");
+            const data: createPost = {
+                title,
+                subtitle,
+                slug,
+                authorId: userId,
+                content: content,
+                tags: [newTag],
+                published: published,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                previewImage: files[0] ? formData : undefined
             }
+            const createNewBlog = await createBlogPost(data)
+            const newPostId = createNewBlog.$id
+            setPostId(newPostId)
+            toast.success("🥳🥳Congrats!! Blog published successfully", {
+                style: { color: "green" }
+            });
+            setSuccess(true)
+            setTimeout(() => {
+                router.push("/")
+            }, 3000)
         } catch (error) {
-            toast.error("An error occurred during publishing");
-        } finally {
-            setIsLoading(false);
+            console.log("could not create post", error)
         }
-    };
+    }
 
     return (
         <div className={isDialogOpen ? 'modal-open' : ''}>
@@ -124,7 +121,6 @@ const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
                 <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <AlertDialogTrigger onClick={() => setIsDialogOpen(true)} disabled={isLoading} className='flex text-center rounded-2xl p-2 bg-green-400'>
                         {isLoading ? "Saving..." : "Publish"}
-                        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <div className='flex space-x-14 font-segoe'>
@@ -156,48 +152,30 @@ const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
                         </div>
                         <AlertDialogDescription className="text-sm text-gray-500 mb-2">
                             Add or change topics so that readers can know what your story is about
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {tags.map((tag) => (
-                                    <div
-                                        key={ID.unique()}
-                                        onClick={() => handleTagSelect(tag.$id)}
-                                        className={`cursor-pointer rounded-2xl p-2 border-2 flex items-center justify-center ${selectedTag === tag.$id ? "bg-blue-500 border-blue-700 text-white" : "bg-gray-200 border-gray-300"
-                                            }`}
-                                    >
-                                        {tag.name}
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="mt-4">
-                                <Textarea
-                                    className='border border-gray-100 rounded-none bg-gray-50 h-6 p-2 mt-2 focus:outline-none'
-                                    value={newTag}
-                                    onChange={(e) => setNewTag(e.target.value)}
-                                    placeholder='Add a topic...'
-                                />
-                                <button
-                                    type='button'
-                                    onClick={handleAddTag}
-                                    value={selectedTag!}
-                                    className="ml-2 bg-blue-500 text-white px-4 py-2 mt-2 rounded-2xl"
-                                >
-                                    Create Tag
-                                </button>
-                            </div>
+                            <Textarea
+                                className='border border-gray-100 rounded-none bg-gray-50 h-6 p-2 mt-2 focus:outline-none'
+                                value={newTag}
+                                onChange={(e) => setNewTag(e.target.value)}
+                                placeholder='Add a topic...'
+                            />
                         </AlertDialogDescription>
                         <AlertDialogFooter>
-                            <AlertDialogCancel onClick={onClose} className='border-none font-normal text-gray-500'>Schedule for later</AlertDialogCancel>
+                            <AlertDialogCancel
+                                onClick={onClose}
+                                className='border-none font-normal text-gray-500'>Schedule for later</AlertDialogCancel>
                             <Button
-                                onClick={handlePublish}
+                                onClick={handleBlog}
                                 variant={"secondary"}
                                 disabled={isLoading}
                             >
                                 Publish
                             </Button>
                         </AlertDialogFooter>
+                        {success && <Success />}
                     </AlertDialogContent>
                 </AlertDialog>
             </div>
+
         </div>
     );
 };

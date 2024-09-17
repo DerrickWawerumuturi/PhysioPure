@@ -1,16 +1,6 @@
 import { Block } from "@blocknote/core";
 
-export type Post = {
-  author: string;
-  category: string;
-  title: string;
-  subTitle: string;
-};
-
-export type ToolbarProps = {
-  editor: Editor | null;
-};
-
+// user props
 declare interface signInProps {
   email: string;
   password: string;
@@ -32,6 +22,12 @@ declare type UserInfo = {
   password: string;
 } | null;
 
+declare type User = {
+  $id: string;
+  name: string;
+  email: string;
+};
+
 declare interface ProfileIcon {
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   label: string;
@@ -39,45 +35,38 @@ declare interface ProfileIcon {
   onClick?: () => void;
 }
 
-declare interface EditorProps {
-  onBlocksChange: (blocks: Block[]) => void;
-  onSaveDraft: (blocks: Block[]) => void;
-  onPubblish: (blocks: Block[]) => void;
+// blog props
+declare interface createPost {
+  title: string;
+  subtitle: string;
+  slug: string;
+  authorId: string;
+  content: string;
+  tags: string[];
+  published: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  previewImage: FormData | undefined;
 }
 
-declare interface BlogData {
-  content: string[];
-  status: type;
-  userId: user.$id;
-}
-
-export interface ReturnData {
-  level?: number;
-  type: string;
-  text: string;
-}
-
-export interface SaveButtonProps {
-  onClick: () => void;
-  isLoading: boolean;
-  isDraftSaved: boolean;
-  errorMessage?: string;
-}
-
-declare type UpdateBlogParams = {
-  blogId: string;
-  status: string;
-  content?: string;
-};
-
-declare interface dbUserParams {
+declare interface BlogProps extends createPost {
   $id: string;
-  email: string;
-  name: string;
+  title: string;
+  slug: string;
+  authorId: string;
+  content: string;
+  tags: string[];
+  published: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  previewImageId: string;
+  previewImageUrl: string;
 }
 
-declare interface BlogData {
-  content: string[] | string | undefined;
-  title?: string;
-  subtitle?: string;
+declare interface updatePost {
+  postId: string;
+  updatedContent: string;
 }
+
+declare type MyInlineContent = InlineContent<StyleSchema, StyleImplementation>;
+declare type MyTableContent = TableContent<MyInlineContent, any>;

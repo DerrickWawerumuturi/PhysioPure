@@ -1,14 +1,23 @@
+'use client'
 import dynamic from 'next/dynamic'
-import "../css/Editor.css"
+
 
 const Editor = dynamic(() => import('@/components/Editor/Editor'), { ssr: false })
 
 const newStory = () => {
     return (
-        <div className=''>
+        <div className='mt-10'>
             <Editor />
         </div>
     )
 }
 
 export default newStory
+
+
+// database
+/**
+ * create function for creating a new blog
+ *          - link the blog  with the user
+ *          - breakdown the storage of 
+ */

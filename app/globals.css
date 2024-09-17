@@ -91,11 +91,45 @@ body {
   /* blur background */
   /* styles.css */
   .blur-background {
-    filter: blur(4px);
+    filter: blur(2px);
     transition: filter 0.3s ease;
   }
 
+  /* Optional - darken the background when blurred */
   .modal-open .blur-background {
-    filter: blur(4px);
+    backdrop-filter: blur(2px);
+  }
+
+  /* Ensure dialog content is on top */
+  .z-50 {
+    z-index: 50;
+  }
+
+  /* editor */
+  .editor-container {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    border: none;
+  }
+
+  .blocknote-editor {
+    width: 60%;
+    max-width: 800px;
+    min-width: 300px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 20px;
+    font-family: sans-serif;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .blocknote-editor:focus {
+    border: none;
+    outline: none;
   }
 }
