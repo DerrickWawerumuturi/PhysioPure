@@ -124,3 +124,15 @@ export const timeDifference = (updatedAt: string): string => {
   if (minutes > 0) return `${minutes}m ago`;
   return `${seconds}s ago`;
 };
+
+export const publishedDate = (date: string | Date) => {
+  if (date) {
+    const validDate = typeof date === "string" ? new Date(date) : date;
+    return validDate.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  }
+  return "Date not available";
+};

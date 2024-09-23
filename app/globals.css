@@ -60,9 +60,41 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+  .remove-scrollbar::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    border-radius: 0px;
+  }
+
+  .remove-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .remove-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 0px;
+  }
+
+  .remove-scrollbar::-webkit-scrollbar-thumb:hover {
+    /* background: #1e2238; */
+    background: transparent;
+  }
 }
 
 @layer utilities {
+  h1 {
+    font-family: var(--font-kolker);
+  }
+  .text-14-regular {
+    @apply text-[14px] leading-[18px] font-normal;
+  }
+  .container {
+    @apply relative flex-1 overflow-y-auto;
+  }
+
+  .sub-container {
+    @apply mx-auto flex size-full flex-col py-10;
+  }
   /* auth */
   .auth-form {
     @apply flex min-h-screen w-full max-w-[420px] flex-col justify-center gap-5 py-10 md:gap-8;
@@ -131,5 +163,16 @@ body {
   .blocknote-editor:focus {
     border: none;
     outline: none;
+  }
+  .copyright {
+    @apply text-14-regular justify-items-end text-center text-dark-600 xl:text-left;
+  }
+  .side-img {
+    @apply hidden h-full object-cover md:block;
+  }
+  .footer-bg {
+    background-image: url("/assets/images/footerbg.png");
+    background-size: cover;
+    background-position: center;
   }
 }

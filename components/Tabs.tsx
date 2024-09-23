@@ -2,6 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import "../app/tabs.css"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
 
 const Tabs = () => {
     const router = useRouter()
@@ -25,36 +26,25 @@ const Tabs = () => {
 
 
     return (
-        <div className='tabs-container border-b-2 border-gray-100'>
-            <button
-                type='button'
-                title='slideLeft'
-            >
-                <ChevronLeft
-                    className='chevron'
-                />
-            </button>
-            <div
-                className='tabs-scroll'
-            >
-                {tabs.map((tab) => (
-                    <div
-                        key={tab.name}
-                        className={`tab text-sm text-gray-600 font-normal ${activeTag === tab.tag ? "active-tab" : ""}`}
-                        onClick={() => handleTabClick(tab.tag)}
-                    >
-                        {tab.name}
-                    </div>
-                ))}
-            </div>
-            <button
-                title='slideRight'
-                type='button'
-            >
-                <ChevronRight
-                    className='chevron'
-                />
-            </button>
+        <div>
+            <Select>
+                <SelectTrigger className="w-[180px] focus:outline-none">
+                    <SelectValue placeholder="Categories" />
+                </SelectTrigger>
+                <SelectContent className='focus:outline-none'>
+                    <SelectGroup>
+                        <SelectLabel>Physiology</SelectLabel>
+                        {tabs.map((tab) => (
+                            <SelectItem
+                                onClick={() => handleTabClick(tab.tag)}
+                                value={tab.tag}
+                                key={tab.tag}
+                            >{tab.name}</SelectItem>
+                        ))}
+
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
         </div>
     )
 }

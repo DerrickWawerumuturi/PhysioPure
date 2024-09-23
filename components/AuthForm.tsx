@@ -7,7 +7,6 @@ import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import CustomInput from "./CustomInput"
 import { authFormSchema } from "@/lib/utils"
@@ -15,6 +14,7 @@ import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import { signIn, signUp } from "@/lib/actions/user.actions"
 import { useRouter } from "next/navigation"
+import { kolker } from "@/app/(auth)/layout"
 
 
 const AuthForm = ({ type }: { type: string }) => {
@@ -56,18 +56,18 @@ const AuthForm = ({ type }: { type: string }) => {
                 if (response) router.push("/")
             }
         } catch (error) {
-            console.error('Error submitting form')
+            console.error('Error submitting form', error)
         } finally {
             setIsLoading(false)
         }
     }
 
     return (
-        <section className="auth-form ml-10">
+        <section className="auth-form ml-10 lg:pl-14">
             <header className="flex flex-col gap-5 md:gap-8">
                 <Link href={"/"} className="cursor-pointer items-center gap-1 flex">
-                    <h1 className="text-[26px] leading-[26px] font-segoe font-bold text-black">
-                        Insights
+                    <h1 className={`leading-[26px] text-5xl font-bold text-black font-kolker ${kolker.className}`}>
+                        PhysioPure
                     </h1>
                 </Link>
             </header>

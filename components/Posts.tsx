@@ -1,14 +1,18 @@
 'use client'
 import { getAllPosts } from "@/lib/actions/blog.actions"
 import { getLoggedInUser } from "@/lib/actions/user.actions"
-import { Capitalize, timeDifference } from "@/lib/utils"
+import { Capitalize, cn, timeDifference } from "@/lib/utils"
 import { BlogProps, User } from "@/types"
+import { useTheme } from "next-themes"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 const Posts: React.FC = () => {
     const [blogs, setBLogs] = useState<BlogProps[]>([])
     const [user, setUser] = useState<User>()
+    const router = useRouter()
+    const { theme } = useTheme()
 
     useEffect(() => {
         const getAllBlogs = async () => {
@@ -24,11 +28,17 @@ const Posts: React.FC = () => {
         getAllBlogs()
     }, [])
 
+    const handleClick = (slug: string) => {
+        router.push(`/blog/${slug}`)
+
+    }
     return (
         <div className="flex space-x-5">
-            <div>
+            <div className="hover:cursor-pointer">
                 {blogs.map((blog) => (
-                    <div key={blog.$id} className="flex space-x-10 border-b-2 pb-8 border-gray-100 lg:w-[700px]  overflow-hidden ">
+                    <div key={blog.$id} className={cn("flex space-x-10 border-b-2 pb-8 border-gray-100 lg:w-[700px]  overflow-hidden", {
+                        'border-none': theme === 'dark'
+                    })} onClick={() => handleClick(blog.slug)}>
                         <div className="flex flex-col p-4 space-y-6 flex-grow">
                             <div className="flex space-x-2">
                                 <p className="rounded-full w-5 h-5 flex items-center justify-center bg-blue-500  text-white font-semibold text-xm p-3">

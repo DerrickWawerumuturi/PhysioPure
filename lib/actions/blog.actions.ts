@@ -62,6 +62,20 @@ export const updateBlogPost = async (data: updatePost) => {
   }
 };
 
+export const getSpecificPost = async (slug: string | string[]) => {
+  const { database } = await createAdminClient();
+  try {
+    const specificBlog = await database.listDocuments(
+      DATABASE_ID!,
+      BLOG_COLLECTION_ID!,
+      [Query.equal("slug", slug)]
+    );
+    return parseStringify(specificBlog.documents);
+  } catch (error) {
+    console.log("couldn't get specific post");
+  }
+};
+
 export const getAllPosts = async () => {
   const { database } = await createAdminClient();
   try {

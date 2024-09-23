@@ -11,6 +11,8 @@ const config: Config = {
     extend: {
       fontFamily: {
         segoe: ["Segoe UI", "sans-serif"],
+        kolker: ["var(--font-kolker)"],
+        satisfies: ["vat(--font-satisfy"],
       },
       colors: {
         background: "hsl(var(--background))",
@@ -62,6 +64,7 @@ const config: Config = {
       buttonGradient: "#0179FE",
       backgroundImage: {
         gradient: "linear-gradient(90deg, #0179FE 0%, #4893FF 100%)",
+        footer: "url('/assets/images/footerbg.png)",
       },
       gray: {
         25: "#FCFCFD",
@@ -71,6 +74,14 @@ const config: Config = {
         600: "#475467",
         700: "#344054",
         900: "#101828",
+      },
+      dark: {
+        200: "#0D0F10",
+        300: "#131619",
+        400: "#1A1D21",
+        500: "#363A3D",
+        600: "#76828D",
+        700: "#ABB8C4",
       },
     },
   },

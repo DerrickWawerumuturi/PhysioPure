@@ -1,19 +1,19 @@
 'use client'
 import { getLoggedInUser, PlainUser } from '@/lib/actions/user.actions'
 import { cn } from '@/lib/utils'
-import { UserInfo } from '@/types'
+import { User, UserInfo } from '@/types'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const Page = () => {
-    const [user, setUser] = useState<PlainUser | null>()
+    const [user, setUser] = useState<User>()
     const currentPathname = usePathname()
 
     useEffect(() => {
         const fetchUser = async () => {
-            const user = await getLoggedInUser()
-            setUser(user?.plainUser.plainUser)
+            const user: User = await getLoggedInUser()
+            setUser(user)
         }
         fetchUser()
     }, [])

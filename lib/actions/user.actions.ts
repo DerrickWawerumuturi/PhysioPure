@@ -66,7 +66,6 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 
 export const signIn = async ({ email, password }: signInProps) => {
   try {
-    console.log("attempting to log in ");
     const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
 
@@ -76,6 +75,7 @@ export const signIn = async ({ email, password }: signInProps) => {
       sameSite: "strict",
       secure: true,
     });
+
     const response = await account.createEmailPasswordSession(email, password);
 
     return parseStringify(response);

@@ -1,6 +1,5 @@
 'use client'
 import { getLoggedInUser, logOut } from "@/lib/actions/user.actions"
-import { UserInfo } from "@/types"
 import { useEffect, useState } from "react"
 import { Popover } from "./ui/popover"
 import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover"
