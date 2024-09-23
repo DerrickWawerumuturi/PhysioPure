@@ -12,7 +12,6 @@ const config: Config = {
       fontFamily: {
         segoe: ["Segoe UI", "sans-serif"],
         kolker: ["var(--font-kolker)"],
-        satisfies: ["vat(--font-satisfy"],
       },
       colors: {
         background: "hsl(var(--background))",

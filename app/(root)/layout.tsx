@@ -1,18 +1,13 @@
 'use client'
 
 import type { Metadata } from "next";
-import { Kolker_Brush, Satisfy } from 'next/font/google'
+import { Kolker_Brush } from 'next/font/google'
 import "../globals.css";
 import { cn } from "@/lib/utils";
 import Header from "@/components/Header";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 
-export const satisfy = Satisfy({
-  subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-satisfy'
-})
 
 const kolker = Kolker_Brush({
   subsets: ['latin'],
@@ -35,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn('min-h-screen font-sans antialiased', satisfy.variable)}
+        className={cn('min-h-screen font-sans antialiased')}
       >
         <ThemeProvider
           attribute="class"

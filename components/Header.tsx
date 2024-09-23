@@ -6,7 +6,6 @@ import Link from 'next/link';
 import UserAccount from './UserAccount';
 import { Suspense } from 'react';
 import Tabs from './Tabs';
-import { satisfy } from '@/app/(root)/layout';
 import { ModeToggle } from './ModeToggle';
 import { cn } from '@/lib/utils';
 import { useTheme } from 'next-themes';
@@ -23,7 +22,7 @@ const Header = () => {
             "border-gray-50 border-b-2": theme === 'dark'
         })}>
             <div className="header flex space-x-8 justify-between">
-                <h1 className={`text-3xl font-bold  mt-4 ml-5 ${satisfy.className}`}>PhysioPure</h1>
+                <h1 className={`text-3xl font-bold  mt-4 ml-5`}>PhysioPure</h1>
                 {/* <div className=' lg:ml-28 sm:pl-12 lg:pl-44'>
                     <Suspense fallback={<div>Loading...</div>}>
                         <Tabs />
