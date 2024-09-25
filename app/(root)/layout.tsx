@@ -1,20 +1,16 @@
 'use client'
 
 import type { Metadata } from "next";
-import { Kolker_Brush } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import "../globals.css";
 import { cn } from "@/lib/utils";
-import Header from "@/components/Header";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import PandaHeader from "@/components/Navbar";
 
 
-const kolker = Kolker_Brush({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: '400',
-  variable: '--font-kolker'
-})
+
+const inter = Inter({ subsets: ["latin"] });
 
 const metadata: Metadata = {
   title: "Insight",
@@ -30,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn('min-h-screen font-sans antialiased')}
+        className={cn('relative h-full min-h-screen font-sans antialiased', inter.className)}
       >
         <ThemeProvider
           attribute="class"
@@ -38,9 +34,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          {children}
-          <Toaster />
+          <PandaHeader />
+          <div className="flex-grow flex-1">{children}</div>
+
+          <Toaster position="top-center" />
         </ThemeProvider>
       </body>
     </html>
