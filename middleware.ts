@@ -13,6 +13,7 @@ export default auth((req) => {
   if (pathname === "/") {
     return NextResponse.next();
   }
+
   const isAccessingAuthRoute = AUTH_ROUTES.some((route) =>
     pathname.startsWith(route)
   );
@@ -25,7 +26,7 @@ export default auth((req) => {
   }
 
   if (isAccessingAuthRoute) {
-    if (isAuth) {
+    if (!isAuth) {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
