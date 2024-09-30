@@ -26,10 +26,11 @@ export default auth((req) => {
   }
 
   if (isAccessingAuthRoute) {
-    if (!isAuth) {
+    if (isAuth) {
+      return NextResponse.redirect(new URL("/", req.url));
+    } else {
       return NextResponse.redirect(new URL("/sign-in", req.url));
     }
-    return NextResponse.next();
   }
 
   if (!isAuth && isAccessingProtectedRoute) {
