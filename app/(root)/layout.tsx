@@ -6,7 +6,8 @@ import "../globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
-import PandaHeader from "@/components/Navbar";
+import Navbar from "@/components/Navbar";
+import { SessionProvider } from "next-auth/react";
 
 
 
@@ -28,17 +29,18 @@ export default function RootLayout({
       <body
         className={cn('relative h-full min-h-screen font-sans antialiased', inter.className)}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <PandaHeader />
-          <div className="flex-grow flex-1">{children}</div>
-
-          <Toaster position="top-center" />
-        </ThemeProvider>
+        <SessionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            <div className="flex-grow flex-1 min-h-screen">{children}</div>
+            <Toaster position="top-center" />
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );

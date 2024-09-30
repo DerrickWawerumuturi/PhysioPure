@@ -28,7 +28,7 @@ const Tabs = () => {
     return (
         <div>
             <Select>
-                <SelectTrigger className="w-[180px] focus:outline-none">
+                <SelectTrigger className="focus:outline-none">
                     <SelectValue placeholder="Categories" />
                 </SelectTrigger>
                 <SelectContent className='focus:outline-none'>

@@ -12,9 +12,10 @@ import CustomInput from "./CustomInput"
 import { authFormSchema } from "@/lib/utils"
 import { useState } from "react"
 import { Loader2 } from "lucide-react"
-import { signIn, signUp } from "@/lib/actions/user.actions"
+import { SignIn, signUp } from "@/lib/actions/user.actions"
 import { useRouter } from "next/navigation"
-import { kolker } from "@/app/(auth)/layout"
+import GoogleSignUp from "./GoogleSignUp"
+import React from "react"
 
 
 const AuthForm = ({ type }: { type: string }) => {
@@ -49,7 +50,7 @@ const AuthForm = ({ type }: { type: string }) => {
 
             }
             if (type === 'sign-in') {
-                const response = await signIn({
+                const response = await SignIn({
                     email: data.email,
                     password: data.password
                 })
@@ -66,7 +67,7 @@ const AuthForm = ({ type }: { type: string }) => {
         <section className="auth-form ml-10 lg:pl-14">
             <header className="flex flex-col gap-5 md:gap-8">
                 <Link href={"/"} className="cursor-pointer items-center gap-1 flex">
-                    <h1 className={`leading-[26px] text-5xl font-bold text-black font-kolker ${kolker.className}`}>
+                    <h1 className={`leading-[26px] text-5xl font-bold text-black`}>
                         PhysioPure
                     </h1>
                 </Link>
@@ -118,6 +119,9 @@ const AuthForm = ({ type }: { type: string }) => {
                     </div>
                 </form>
             </Form>
+            <div className="flex justify-center">
+                <GoogleSignUp />
+            </div>
             <footer className='flex justify-center gap-1'>
                 <p className='text-[14px] leading-[14px] font-normal text-gray-600'>{type === "sign-in"
                     ? "Don't have an account?"

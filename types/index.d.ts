@@ -26,6 +26,7 @@ declare type User = {
   $id: string;
   name: string;
   email: string;
+  username: string;
 };
 
 declare interface ProfileIcon {
@@ -40,10 +41,11 @@ declare interface createPost {
   title: string;
   subtitle: string;
   slug: string;
-  authorId: string;
+  author_id: string;
   content: string;
   tags: string[];
   published: boolean;
+  publish_type: string
   createdAt: Date;
   updatedAt: Date;
   previewImage: FormData | undefined;
@@ -53,7 +55,7 @@ declare interface BlogProps extends createPost {
   $id: string;
   title: string;
   slug: string;
-  authorId: string;
+  author_id: string;
   content: string;
   tags: string[];
   published: boolean;
@@ -66,6 +68,10 @@ declare interface BlogProps extends createPost {
 declare interface updatePost {
   postId: string;
   updatedContent: string;
+}
+
+declare interface TagFormProps {
+  onTagsChange: (tags: string[]) => void;
 }
 
 declare type MyInlineContent = InlineContent<StyleSchema, StyleImplementation>;

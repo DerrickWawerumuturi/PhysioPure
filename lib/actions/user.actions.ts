@@ -42,7 +42,7 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     );
     if (!newUser) throw Error("User not created in Document");
     const session = await account.createEmailPasswordSession(email, password);
-
+    console.log("session created");
     cookies().set("appwrite-session", session.secret, {
       path: "/",
       httpOnly: true,
@@ -64,7 +64,7 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
   }
 };
 
-export const signIn = async ({ email, password }: signInProps) => {
+export const SignIn = async ({ email, password }: signInProps) => {
   try {
     const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
@@ -87,11 +87,39 @@ export const signIn = async ({ email, password }: signInProps) => {
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
+    if (account === null) {
+      return null;
+    }
+
     const user = await account.get();
     return parseStringify(user);
   } catch (error) {
-    console.log("could get user");
     return null;
+  }
+}
+
+export async function userExists() {
+  try {
+    const { account } = await createAdminClient();
+    const user = await account.get();
+    return parseStringify(user);
+  } catch (error) {
+    console.log("Could not get", error);
+  }
+}
+
+export async function getUserById(authorId: string) {
+  const { database } = await createAdminClient();
+  try {
+    const user = await database.listDocuments(
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
+      [Query.equal("userId", authorId)]
+    );
+    return parseStringify(user.documents);
+  } catch (error) {
+    console.log("user not found with given authorId: " + authorId);
+    console.log("error is", error);
   }
 }
 

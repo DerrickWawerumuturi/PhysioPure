@@ -9,11 +9,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      maxWidth: {
+        "8xl": "90rem",
+        "9xl": "100rem",
+      },
       fontFamily: {
         segoe: ["Segoe UI", "sans-serif"],
         kolker: ["var(--font-kolker)"],
       },
       colors: {
+        "custom-gray": "#23272F",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -61,9 +66,13 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       buttonGradient: "#0179FE",
+      footerbackground: "#23272F",
       backgroundImage: {
         gradient: "linear-gradient(90deg, #0179FE 0%, #4893FF 100%)",
         footer: "url('/assets/images/footerbg.png)",
+        exercise: "url('/assets/images/exercise.png')",
+        plans: "url('/assets/images/plans.png')",
+        injury: "url('/assets/images/injury.png')",
       },
       gray: {
         25: "#FCFCFD",
@@ -81,6 +90,7 @@ const config: Config = {
         500: "#363A3D",
         600: "#76828D",
         700: "#ABB8C4",
+        800: "#23272F",
       },
     },
   },

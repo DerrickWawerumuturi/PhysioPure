@@ -1,6 +1,6 @@
-import Header from "@/components/Header"
 import "../globals.css"
 import { Toaster } from "sonner"
+import Navbar from "@/components/Navbar"
 
 export default function Layout({
   children,
@@ -20,7 +20,7 @@ export default function Layout({
           }}
           position="top-center"
         />
-        <Header />
+        <Navbar />
         {children}
 
       </body>

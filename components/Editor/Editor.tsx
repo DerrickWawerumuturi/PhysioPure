@@ -5,12 +5,8 @@ import { useCreateBlockNote } from "@blocknote/react"
 import "@blocknote/mantine/style.css";
 import "@blocknote/core/fonts/inter.css";
 import { Block, BlockNoteEditor } from "@blocknote/core";
-import extractContent from "../extractContent";
 import TagSelectionDialog from "../TagSelectionDialog";
-import { toast } from "sonner";
-import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { useState } from "react";
-import { createBlogPost, updateBlogPost } from "@/lib/actions/blog.actions";
 
 
 
@@ -19,8 +15,8 @@ export default function Editor() {
     const [isLoading, setIsLoading] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [blogId, setBlogId] = useState<string | null>(null);
-    const [title, setTitle] = useState(""); // Added title state
-    const [subtitle, setSubtitle] = useState(""); // Added subtitle state
+    const [title, setTitle] = useState("");
+    const [subtitle, setSubtitle] = useState("");
 
     const editor: BlockNoteEditor = useCreateBlockNote()
 

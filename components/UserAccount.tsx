@@ -1,5 +1,5 @@
 'use client'
-import { getLoggedInUser, logOut } from "@/lib/actions/user.actions"
+
 import { useEffect, useState } from "react"
 import { Popover } from "./ui/popover"
 import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover"
@@ -7,10 +7,11 @@ import { Bookmark, LogOut, Settings, User } from "lucide-react"
 import Profile from "./Profile"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { getLoggedInUser, logOut } from "@/lib/actions/user.actions"
 
 const UserAccount = () => {
-    const [user, setUser] = useState<string | null | undefined>(null)
-    const [email, setEmail] = useState<string | null | undefined>(null)
+    const [user, setUser] = useState<string | null>(null)
+    const [email, setEmail] = useState<string | null>(null)
     const router = useRouter()
 
     const handleLogOut = async () => {
@@ -24,11 +25,22 @@ const UserAccount = () => {
     useEffect(() => {
         const fetchUser = async () => {
             const user = await getLoggedInUser()
-            setEmail(user.email)
-            setUser(user.name)
+            if (user === null) {
+                setEmail(null)
+                setUser(null)
+            } else {
+                setEmail(user.email)
+                setUser(user.name)
+            }
         }
         fetchUser()
     }, [])
+
+    if (user === null) {
+        return (
+            <div />
+        )
+    }
 
     return (
         <Popover>

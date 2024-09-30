@@ -1,7 +1,6 @@
 'use client'
 import dynamic from 'next/dynamic'
 
-
 const Editor = dynamic(() => import('@/components/Editor/Editor'), { ssr: false })
 
 const newStory = () => {
@@ -13,11 +12,3 @@ const newStory = () => {
 }
 
 export default newStory
-
-
-// database
-/**
- * create function for creating a new blog
- *          - link the blog  with the user
- *          - breakdown the storage of 
- */

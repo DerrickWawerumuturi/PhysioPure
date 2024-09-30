@@ -6,7 +6,7 @@ const page = () => {
     return (
         <div className='flex h-screen max-w-screen'>
             <div className='container remove-scrollbar'>
-                <div className='sub-container max-w-[860px] flex-1 flex-col py-10 items-center lg:px-[5%]'>
+                <div className='sub-container max-w-[860px] flex-1 py-2 items-center lg:px-[5%]'>
                     <AuthForm type='sign-up' />
                 </div>
             </div>

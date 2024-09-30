@@ -1,7 +1,7 @@
 'use client'
 
 import { getSpecificPost } from '@/lib/actions/blog.actions'
-import { getLoggedInUser } from '@/lib/actions/user.actions'
+import { getUserById } from '@/lib/actions/user.actions';
 import { cn, publishedDate } from '@/lib/utils'
 import { BlogProps, User } from '@/types'
 import { ChevronRight } from 'lucide-react'
@@ -36,9 +36,13 @@ const Page = () => {
     useEffect(() => {
         const getBlog = async () => {
             try {
-                const blog = await getSpecificPost(slug)
+                const blog: BlogProps[] = await getSpecificPost(slug)
                 setBlog(blog)
-                const user: User = await getLoggedInUser()
+                blog.forEach(async (part) => {
+                    const authorId = part.author_id
+                    const user: User = await getUserById(authorId)
+                    setUser(user)
+                })
                 setUser(user)
             } catch (error) {
                 console.log("could retrieve the specific blog")

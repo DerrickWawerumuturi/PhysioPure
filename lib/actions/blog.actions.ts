@@ -13,9 +13,14 @@ const {
   APPWRITE_STORAGE_ID: STORAGE_ID,
   NEXT_PUBLIC_APPWRITE_ENDPOINT: ENDPOINT,
   NEXT_PUBLIC_APPWRITE_PROJECT: PROJECT_ID,
+  APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
 } = process.env;
 
-export const createBlogPost = async ({ previewImage, ...data }: createPost) => {
+export const createBlogPost = async ({
+  previewImage,
+  author_id,
+  ...data
+}: createPost) => {
   const { database } = await createAdminClient();
 
   try {
@@ -30,6 +35,8 @@ export const createBlogPost = async ({ previewImage, ...data }: createPost) => {
       file = await storage.createFile(STORAGE_ID!, ID.unique(), inputFile);
     }
 
+    console.log("author id is this", author_id);
+
     const newPost = await database.createDocument(
       DATABASE_ID!,
       BLOG_COLLECTION_ID!,
@@ -38,11 +45,17 @@ export const createBlogPost = async ({ previewImage, ...data }: createPost) => {
         previewImageId: file?.$id || null,
         previewImageUrl: `${ENDPOINT}/storage/buckets/${STORAGE_ID}/files/${file?.$id}/view?project=${PROJECT_ID}`,
         ...data,
+        author_id,
       }
     );
-    return parseStringify(newPost);
+    if (newPost.$id) {
+      console.log("newPost id ", parseStringify(newPost));
+      return newPost;
+    } else {
+      return false;
+    }
   } catch (error) {
-    console.log("could not create a post");
+    console.log("could not create a post", error);
   }
 };
 
@@ -87,6 +100,61 @@ export const getAllPosts = async () => {
     return parseStringify(blogs.documents);
   } catch (error) {
     console.log("could not get blogs");
+  }
+};
+
+export const getTop6Posts = async () => {
+  const { database } = await createAdminClient();
+  try {
+    const blogs = await database.listDocuments(
+      DATABASE_ID!,
+      BLOG_COLLECTION_ID!,
+      [Query.orderDesc("updatedAt"), Query.limit(6)]
+    );
+    return parseStringify(blogs.documents);
+  } catch (error) {
+    console.log("could not get blogs");
+  }
+};
+
+export const getPostsWithTags = async (tag: string) => {
+  const { database } = await createAdminClient();
+
+  try {
+    const relatedPosts = await database.listDocuments(
+      DATABASE_ID!,
+      BLOG_COLLECTION_ID!,
+      [Query.equal("tags", tag)]
+    );
+    console.log("any related posts?", relatedPosts.total);
+    return parseStringify(relatedPosts.documents);
+  } catch (error) {
+    console.log("could not get blogs related to the tag given", error);
+    return null;
+  }
+};
+
+export const getPostsOnQuery = async (query: string) => {
+  const { database } = await createAdminClient();
+  try {
+    if (query === "articles") {
+      const articles = await database.listDocuments(
+        DATABASE_ID!,
+        BLOG_COLLECTION_ID!,
+        [Query.equal("publish_type", query)]
+      );
+      return parseStringify(articles.documents);
+    } else {
+      const blogs = await database.listDocuments(
+        DATABASE_ID!,
+        BLOG_COLLECTION_ID!,
+        [Query.equal("publish_type", query)]
+      );
+
+      return parseStringify(blogs.documents);
+    }
+  } catch (error) {
+    console.log("error", error);
   }
 };
 
