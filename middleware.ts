@@ -27,13 +27,16 @@ export default auth((req) => {
 
   if (isAccessingAuthRoute) {
     if (isAuth) {
+      console.log(`Redirecting authenticated user from ${pathname} to /`);
       return NextResponse.redirect(new URL("/", req.url));
     } else {
+      console.log(`Redirecting unauthenticated user to /sign-in`);
       return NextResponse.redirect(new URL("/sign-in", req.url));
     }
   }
 
   if (!isAuth && isAccessingProtectedRoute) {
+    console.log(`Redirecting unauthenticated user from protected route ${pathname} to /sign-in`);
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 });
