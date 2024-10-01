@@ -23,7 +23,7 @@ const GoogleSignUp = () => {
                     width={20}
                     height={20}
                 />
-                <p>Sign in with google</p>
+                <p className='pl-3 text-normal'>Sign in with google</p>
             </Button>
         </div>
 

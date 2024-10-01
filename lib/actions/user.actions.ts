@@ -19,6 +19,7 @@ const {
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
   const { email, username } = userData;
+
   let newUserAccount;
   try {
     const { account, database } = await createAdminClient();
@@ -42,13 +43,16 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     );
     if (!newUser) throw Error("User not created in Document");
     const session = await account.createEmailPasswordSession(email, password);
+
     console.log("session created");
+
     cookies().set("appwrite-session", session.secret, {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
       secure: true,
     });
+
     return parseStringify(newUser);
   } catch (error: any) {
     if (error && error?.code === 409) {
@@ -67,18 +71,33 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 export const SignIn = async ({ email, password }: signInProps) => {
   try {
     const { account } = await createAdminClient();
-    const session = await account.createEmailPasswordSession(email, password);
 
-    cookies().set("appwrite-session", session.secret, {
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-    });
+    if (password) {
+      const session = await account.createEmailPasswordSession(email, password);
 
-    const response = await account.createEmailPasswordSession(email, password);
+      cookies().set("appwrite-session", session.secret, {
+        path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+        secure: true,
+      });
+      return parseStringify(session);
+    } else {
+      const session = await account.getSession("current");
 
-    return parseStringify(response);
+      if (!session) {
+        throw new Error("No session found");
+      }
+
+      cookies().set("appwrite-session", session.secret, {
+        path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+        secure: true,
+      });
+
+      return parseStringify(session);
+    }
   } catch (error) {
     console.log("could not sign in", error);
   }
@@ -98,13 +117,17 @@ export async function getLoggedInUser() {
   }
 }
 
-export async function userExists() {
+export async function userExists(email: string) {
   try {
-    const { account } = await createAdminClient();
-    const user = await account.get();
+    const { database } = await createAdminClient();
+    const user = await database.listDocuments(
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
+      [Query.equal("email", email)]
+    );
     return parseStringify(user);
   } catch (error) {
-    console.log("Could not get", error);
+    console.log("Could not get existing user", error);
   }
 }
 

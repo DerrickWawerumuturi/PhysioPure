@@ -3,7 +3,7 @@ import { Block } from "@blocknote/core";
 // user props
 declare interface signInProps {
   email: string;
-  password: string;
+  password?: string;
 }
 
 declare type SignUpParams = {
@@ -45,7 +45,7 @@ declare interface createPost {
   content: string;
   tags: string[];
   published: boolean;
-  publish_type: string
+  publish_type: string;
   createdAt: Date;
   updatedAt: Date;
   previewImage: FormData | undefined;

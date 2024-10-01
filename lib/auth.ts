@@ -13,18 +13,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       if (account?.provider === "google") {
-        const findUser = await userExists();
+        const findUser = await userExists(user.email as string);
         if (!findUser) {
-          await signUp({
+          const signedUp = await signUp({
             email: user.email!,
             password: "googleAuthPlaceholder",
             username: user.name!,
           });
+
+          console.log(signedUp);
         } else if (findUser) {
-          await SignIn({
+          const signedIn = await SignIn({
             email: user.email!,
-            password: "googleAuthPlaceholder",
           });
+          console.log("signed in user", signedIn);
         }
       }
       return true;

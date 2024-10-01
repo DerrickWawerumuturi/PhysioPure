@@ -9,8 +9,10 @@ export default auth((req) => {
   const isAuth = req.auth;
 
   const isAccessingApiRoute = pathname.startsWith(API_AUTH_PREFIX);
+  const isAccessingSignInRoute = pathname === "/sign-in";
+  const isAccessingSignUpRoute = pathname === "/sign-up";
 
-  if (pathname === "/") {
+  if (pathname === "/" || isAccessingSignInRoute) {
     return NextResponse.next();
   }
 
@@ -30,13 +32,20 @@ export default auth((req) => {
       console.log(`Redirecting authenticated user from ${pathname} to /`);
       return NextResponse.redirect(new URL("/", req.url));
     } else {
-      console.log(`Redirecting unauthenticated user to /sign-in`);
-      return NextResponse.redirect(new URL("/sign-in", req.url));
+      if (isAccessingSignUpRoute) {
+        console.log(`Redirecting user /sign-up`);
+        return NextResponse.next();
+      } else {
+        console.log(`Redirecting unauthenticated user to /sign-in`);
+        return NextResponse.redirect(new URL("/sign-in", req.url));
+      }
     }
   }
 
   if (!isAuth && isAccessingProtectedRoute) {
-    console.log(`Redirecting unauthenticated user from protected route ${pathname} to /sign-in`);
+    console.log(
+      `Redirecting unauthenticated user from protected route ${pathname} to /sign-in`
+    );
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 });
