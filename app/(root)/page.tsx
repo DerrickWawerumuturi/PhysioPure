@@ -47,7 +47,7 @@ export default function Home() {
           className="w-full max-w-sm sm:max-w-xs md:max-w-md rounded-md"
         />
       </div>
-      <div className={cn("flex gap-10 lg:pl-10 sm:mb-16 lg:mb-28 mt-36", {
+      <div className={cn("sm:flex-col sm:gap-5 lg:flex-row lg:gap-10 lg:pl-10 sm:mb-16 lg:mb-28 mt-36", {
         "text-green-400": theme === "dark"
       })}>
         <Bookmarks
