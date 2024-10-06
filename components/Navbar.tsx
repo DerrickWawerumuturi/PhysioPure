@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { Categories, cn } from '@/lib/utils'
 import UserAccount from './UserAccount'
-import { getLoggedInUser } from '@/lib/actions/user.actions'
 import { buttonVariants } from './ui/button'
 import { Edit } from 'lucide-react'
 import { ModeToggle } from './ModeToggle'
+import MobileNav from './MobileNav'
+import { getUser } from '@/lib/auth'
 
 
 const Navbar = () => {
@@ -18,7 +19,7 @@ const Navbar = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const user = await getLoggedInUser()
+            const user = await getUser()
             if (user === null) {
                 setUser(null)
             } else {
@@ -30,10 +31,10 @@ const Navbar = () => {
 
     return (
         <div className='shadow p-2 top-0'>
-            <section className='flex space-x-8 sm:justify-between lg:justify-around ml-5 top-0'>
+            <section className='mx-auto flex space-x-8 sm:justify-between lg:justify-around sm:ml-1 lg:ml-5 top-0'>
                 <Link
                     href={"/"}
-                    className='flex space-x-1 lg:-ml-32'
+                    className='flex space-x-1 lg:-ml-32 sm:ml-0'
                 >
                     <Image
                         src="/assets/images/physioIcon.png"
@@ -41,11 +42,13 @@ const Navbar = () => {
                         width={50}
                         height={50}
                     />
-                    <h1 className='text-xl font-bold mt-3 font-serif'>
+                    <h1 className='text-xl font-bold mt-3'>
                         PhysioPure
                     </h1>
                 </Link>
-                <div className='flex space-x-7 lg:pl-96 text-lg  text-gray-700 font-semibold mt-3'>
+                <MobileNav user={user as string} />
+                <div className='sm:hidden lg:flex space-x-7 lg:pl-96 text-lg  text-gray-700 font-semibold mt-3'>
+
                     <div
                         className='min-w-[100px]'
                         onMouseEnter={() => setIsOpen(true)}

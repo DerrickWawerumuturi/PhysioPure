@@ -131,7 +131,7 @@ export const simplifyContent = (blocks: Block[]): string => {
       console.log("let's get the block type", block.type);
       switch (block.type) {
         case "heading":
-          return `# ${block.content.map(parseInlineContent).join("")}`;
+          return `${block.content.map(parseInlineContent).join("")}`;
 
         case "paragraph":
           return block.content.map(parseInlineContent).join("");

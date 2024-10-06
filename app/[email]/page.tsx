@@ -1,5 +1,5 @@
 'use client'
-import { getLoggedInUser } from '@/lib/actions/user.actions'
+import { getUser } from '@/lib/auth'
 import { cn } from '@/lib/utils'
 import { User, UserInfo } from '@/types'
 import Link from 'next/link'
@@ -12,7 +12,7 @@ const Page = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const user: User = await getLoggedInUser()
+            const user: User = await getUser()
             if (user === null) {
                 setUser(null)
             }

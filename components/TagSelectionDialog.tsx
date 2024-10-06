@@ -4,18 +4,17 @@
 import React, { useState, useEffect } from 'react';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogTrigger } from './ui/alert-dialog';
 import { Button } from './ui/button';
-import { Textarea } from './ui/textarea';
 import FileUploader from './FileUploader';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Input } from './ui/input';
-import { createBlogPost, createTag, getAllTags, updateBlogPost } from '@/lib/actions/blog.actions';
+import { createBlogPost } from '@/lib/actions/blog.actions';
 import { Block, BlockNoteEditor } from '@blocknote/core';
 import { createPost } from '@/types';
 import { generateSlug, simplifyContent } from '@/lib/utils';
 import Success from './Success';
-import { getLoggedInUser } from '@/lib/actions/user.actions';
 import TagForm from './forms/TagForm';
+import { getUser } from '@/lib/auth';
 
 interface TagSelectionDialogProps {
     open: boolean;
@@ -33,7 +32,7 @@ interface TagSelectionDialogProps {
 }
 
 const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
-    open, onClose, isLoading, setIsLoading, blocks, setBlocks,
+    onClose, isLoading,
     title, subtitle, setTitle, setSubtitle, editor
 }) => {
     const router = useRouter();
@@ -46,11 +45,11 @@ const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
 
 
     useEffect(() => {
-        const getUser = async () => {
-            const user = await getLoggedInUser()
+        const getLoggedinUser = async () => {
+            const user = await getUser()
             setUser(user)
         }
-        getUser()
+        getLoggedinUser()
     }, [])
 
     const handleBlog = async (type: "blog" | "article") => {

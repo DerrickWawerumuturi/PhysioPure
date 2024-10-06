@@ -77,17 +77,17 @@ const ArticleBox = () => {
                             className="object-cover"
                         />
                     </div>
-                    <div className="flex flex-col flex-grow p-4 gap-3">
-                        <h2 className={cn("text-start text-gray-900 font-bold text-xl overflow-break-words h-12", {
+                    <div className="flex flex-col flex-grow p-4 gap-2">
+                        <h2 className={cn("text-start text-gray-900 font-bold text-xl overflow-break-words break-words", {
                             "text-white ": theme === 'dark'
                         })}>
                             {Capitalize(blog.title)}
                         </h2>
-                        <p className="text-start text-gray-500 font-normal text-lg line-clamp-2">
+                        <p className="text-start text-gray-500 font-normal text-lg line-clamp-2 ">
                             {Capitalize(blog.subtitle)}
                         </p>
                         <div className='flex-grow' />
-                        <div className="flex sm:flex-row gap-2 text-sm font-sm text-gray-500 bottom-0 h-6">
+                        <div className="flex sm:flex-row gap-2 text-sm font-sm text-gray-500 bottom-0">
                             {users.map((user, index) => (
                                 <p key={index}>{user?.username}</p>
                             ))}

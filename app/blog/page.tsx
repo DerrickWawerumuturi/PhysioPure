@@ -31,7 +31,7 @@ const Page = () => {
         }
         getBlogs()
 
-    }, [])
+    }, [users])
 
 
     const handleClick = (slug: string) => {
