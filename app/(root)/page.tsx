@@ -44,7 +44,7 @@ export default function Home() {
           alt="examples"
           width={1500}
           height={1500}
-          className="w-full max-w-sm sm:max-w-sm md:max-w-md rounded-md"
+          className="w-full max-w-sm sm:max-w-xs md:max-w-md rounded-md"
         />
       </div>
       <div className={cn("flex gap-10 lg:pl-10 sm:mb-16 lg:mb-28 mt-36", {
