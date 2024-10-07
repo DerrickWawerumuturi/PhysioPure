@@ -83,7 +83,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                                         {Categories.map((category, index) => (
                                             <li key={index} className="">
                                                 <Link
-                                                    href={`/category${category.url}`}
+                                                    href={`/categories${category.url}`}
                                                 >
                                                     <span className="text-sm font-medium text-gray-900 hover:text-blue-500 hover:text-md">{category.name}</span>
                                                 </Link>
