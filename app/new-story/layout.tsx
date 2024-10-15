@@ -1,6 +1,7 @@
 import "../globals.css"
 import { Toaster } from "sonner"
 import Navbar from "@/components/Navbar"
+import { ClerkProvider } from "@clerk/nextjs"
 
 export default function Layout({
   children,
@@ -8,22 +9,24 @@ export default function Layout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>
-        <Toaster
-          toastOptions={{
-            style: {
-              background: "white",
-              color: "green"
-            },
-            className: "class"
-          }}
-          position="top-center"
-        />
-        <Navbar />
-        {children}
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          <Toaster
+            toastOptions={{
+              style: {
+                background: "white",
+                color: "green"
+              },
+              className: "class"
+            }}
+            position="top-center"
+          />
+          <Navbar />
+          {children}
 
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }

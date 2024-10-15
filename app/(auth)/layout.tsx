@@ -1,3 +1,4 @@
+import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
 import "../globals.css"
 
 export default function AuthLayout({
@@ -6,8 +7,11 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          {children}</body>
+      </html>
+    </ClerkProvider>
   )
 }

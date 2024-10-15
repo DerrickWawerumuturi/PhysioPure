@@ -1,4 +1,5 @@
 import AuthForm from '@/components/AuthForm'
+import { SignUp } from '@clerk/nextjs'
 import Image from 'next/image'
 import React from 'react'
 
@@ -7,7 +8,9 @@ const page = () => {
         <div className='flex h-screen max-w-screen'>
             <div className='container remove-scrollbar'>
                 <div className='sub-container max-w-[860px] flex-1 py-2 items-center lg:px-[5%]'>
-                    <AuthForm type='sign-up' />
+                    {/* <AuthForm type='sign-up' /> */}
+
+                    <SignUp />
                 </div>
             </div>
             <Image

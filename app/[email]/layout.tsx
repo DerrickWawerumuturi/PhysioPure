@@ -3,6 +3,7 @@ import "../globals.css";
 import { cn } from "@/lib/utils";
 
 import { Toaster } from "sonner";
+import { ClerkProvider } from "@clerk/nextjs";
 
 
 export default function RootLayout({
@@ -12,22 +13,24 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en">
-      <body
-        className={cn('min-h-screen bg-white font-sans antialiased')}
-      >
-        <Toaster
-          toastOptions={{
-            style: {
-              background: "white"
-            },
-            className: "class"
-          }}
-        />
-        <Navbar />
-        {children}
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={cn('min-h-screen bg-white font-sans antialiased')}
+        >
+          <Toaster
+            toastOptions={{
+              style: {
+                background: "white"
+              },
+              className: "class"
+            }}
+          />
+          <Navbar />
+          {children}
 
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

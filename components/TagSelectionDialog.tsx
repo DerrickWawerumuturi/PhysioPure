@@ -4,7 +4,6 @@
 import React, { useState, useEffect } from 'react';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogTrigger } from './ui/alert-dialog';
 import { Button } from './ui/button';
-import { Textarea } from './ui/textarea';
 import FileUploader from './FileUploader';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -14,8 +13,8 @@ import { Block, BlockNoteEditor } from '@blocknote/core';
 import { createPost } from '@/types';
 import { generateSlug, simplifyContent } from '@/lib/utils';
 import Success from './Success';
-import { getLoggedInUser } from '@/lib/actions/user.actions';
 import TagForm from './forms/TagForm';
+import { useUser } from '@clerk/nextjs';
 
 interface TagSelectionDialogProps {
     open: boolean;
@@ -38,31 +37,24 @@ const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
 }) => {
     const router = useRouter();
     const [files, setFiles] = useState<File[]>([]);
-    const [user, setUser] = useState<any>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [published, setPublished] = useState(false)
     const [tags, setTags] = useState<string[]>([])
     const [success, setSuccess] = useState(false)
 
+    const { user, isSignedIn } = useUser()
 
-    useEffect(() => {
-        const getUser = async () => {
-            const user = await getLoggedInUser()
-            setUser(user)
-        }
-        getUser()
-    }, [])
 
     const handleBlog = async (type: "blog" | "article") => {
         // svae the blog to database, making sure to add he title and subtitle or preview from alert content
-        const userId = user.$id
+        const userId = user?.id
         console.log("user id is ", userId)
         const createdAt = new Date()
         const updatedAt = new Date()
 
         const blocks = editor.document
         setPublished(true)
-        const slug = generateSlug(title, user?.username)
+        const slug = generateSlug(title, user?.fullName!)
 
         let formData;
         const content = simplifyContent(blocks)
@@ -83,7 +75,7 @@ const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
                 title,
                 subtitle,
                 slug,
-                author_id: userId,
+                author_id: userId!,
                 content: content,
                 tags,
                 published: published,
@@ -144,7 +136,7 @@ const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
                             </div>
                             {/* Right section - for publish */}
                             <div className='flex'>
-                                <h2 className=''>{' '} Publishing to: <span className='font-semibold ml-1'>{user?.name}</span></h2>
+                                <h2 className=''>{' '} Publishing to: <span className='font-semibold ml-1'>{user?.fullName}</span></h2>
                             </div>
                         </div>
                         <AlertDialogDescription className="text-sm text-gray-500 mb-2">

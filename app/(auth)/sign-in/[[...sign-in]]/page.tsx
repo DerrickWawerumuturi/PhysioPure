@@ -1,4 +1,5 @@
 import AuthForm from '@/components/AuthForm'
+import { SignIn } from '@clerk/nextjs'
 import Image from 'next/image'
 import React from 'react'
 
@@ -6,8 +7,9 @@ const page = () => {
     return (
         <div className='flex h-screen max-w-screen'>
             <div className='container remove-scrollbar'>
-                <div className='sub-container max-w-[860px] flex-1 flex-col py-10 px-[5%]'>
-                    <AuthForm type='sign-in' />
+                <div className='flex items-center justify-center mt-24'>
+                    {/* <AuthForm type='sign-in' /> */}
+                    <SignIn />
                 </div>
             </div>
             <div className='sm:hidden lg:block'>

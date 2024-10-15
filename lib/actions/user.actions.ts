@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
-import { ID, Query } from "node-appwrite";
+import { Account, Client, ID, OAuthProvider, Query } from "node-appwrite";
 import { parseStringify } from "../utils";
 import { signInProps, SignUpParams } from "@/types";
 
@@ -15,7 +15,11 @@ export type PlainUser = {
 const {
   APPWRITE_DATABASE_ID: DATABASE_ID,
   APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
+  NEXT_PUBLIC_APPWRITE_ENDPOINT: ENDPOINT,
+  NEXT_PUBLIC_APPWRITE_PROJECT: PROJECT_ID,
 } = process.env;
+
+const client = new Client().setEndpoint(ENDPOINT!).setProject(PROJECT_ID!);
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
   const { email, username } = userData;
@@ -70,7 +74,7 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 
 export const SignIn = async ({ email, password }: signInProps) => {
   try {
-    const { account } = await createAdminClient();
+    const { account } = await createSessionClient();
 
     if (password) {
       const session = await account.createEmailPasswordSession(email, password);
@@ -83,39 +87,23 @@ export const SignIn = async ({ email, password }: signInProps) => {
       });
       return parseStringify(session);
     } else {
+      const account = new Account(client);
+
+      account.createOAuth2Token(
+        OAuthProvider.Google,
+        "https://insights-ivory.vercel.app/",
+        "https://insights-ivory.vercel.app/sign-in"
+      );
+
       const session = await account.getSession("current");
-
-      if (!session) {
-        throw new Error("No session found");
-      }
-
-      cookies().set("appwrite-session", session.secret, {
-        path: "/",
-        httpOnly: true,
-        sameSite: "strict",
-        secure: true,
-      });
-
-      return parseStringify(session);
+      console.log("is it google", session.provider);
+      console.log("session id", session.userId);
     }
   } catch (error) {
     console.log("could not sign in", error);
   }
 };
 
-export async function getLoggedInUser() {
-  try {
-    const { account } = await createSessionClient();
-    if (account === null) {
-      return null;
-    }
-
-    const user = await account.get();
-    return parseStringify(user);
-  } catch (error) {
-    return null;
-  }
-}
 
 export async function userExists(email: string) {
   try {

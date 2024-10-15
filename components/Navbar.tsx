@@ -1,32 +1,18 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { Categories, cn } from '@/lib/utils'
-import UserAccount from './UserAccount'
-import { getLoggedInUser } from '@/lib/actions/user.actions'
 import { buttonVariants } from './ui/button'
 import { Edit } from 'lucide-react'
 import { ModeToggle } from './ModeToggle'
+import { UserButton, useUser } from '@clerk/nextjs'
 
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const [user, setUser] = useState<string | null>(null)
-
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            const user = await getLoggedInUser()
-            if (user === null) {
-                setUser(null)
-            } else {
-                setUser(user.name)
-            }
-        }
-        fetchUser()
-    }, [])
+    const { user, isSignedIn } = useUser()
 
     return (
         <div className='shadow p-2 top-0'>
@@ -73,17 +59,17 @@ const Navbar = () => {
                     </div>
 
                     <div className={cn('flex space-x-5', {
-                        "hidden": !user
+                        "hidden": !isSignedIn
                     })}>
                         <Link href="/new-story" className={cn("flex gap-2 mr-5")}>
                             <Edit className="text-gray-600 mt-1" strokeWidth={1} />
                             <p className="text-gray-500">Write</p>
                         </Link>
                         <div>
-                            <UserAccount />
+                            <UserButton />
                         </div>
                     </div>
-                    {!user && (
+                    {!isSignedIn && (
                         <div className='flex space-x-7 -mt-2 lg:pl-5'>
                             <Link
                                 href="/articles"

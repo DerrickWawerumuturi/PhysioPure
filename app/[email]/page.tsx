@@ -1,26 +1,13 @@
 'use client'
-import { getLoggedInUser } from '@/lib/actions/user.actions'
 import { cn } from '@/lib/utils'
-import { User, UserInfo } from '@/types'
+import { UserButton, useUser } from '@clerk/nextjs'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const Page = () => {
-    const [user, setUser] = useState<User | null>(null)
+    const { user, isSignedIn } = useUser()
     const currentPathname = usePathname()
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            const user: User = await getLoggedInUser()
-            if (user === null) {
-                setUser(null)
-            }
-            setUser(user)
-        }
-        fetchUser()
-    }, [])
-
 
     if (user === null) {
         return (
@@ -31,8 +18,8 @@ const Page = () => {
     return (
         <div className='h-screen max-h-screen flex flex-col space-y-15 justify-start mt-10 sm:pl-10 lg:pl-20'>
             <div className='profile-icon items-center'>
-                <h3 className='text-center text-white text-2xl pl-1.5'>{user?.name[0]}</h3>
-                <p>{user?.name}</p>
+                <UserButton />
+                <p>{user?.firstName}</p>
             </div>
             <div className='flex gap-5 mt-7 border-b border-gray-200 pb-3'>
                 <Link

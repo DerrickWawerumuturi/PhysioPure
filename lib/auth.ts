@@ -1,50 +1,26 @@
-import NextAuth from "next-auth";
-import { authConfig } from "./auth.config";
-import { SignIn, signUp, userExists } from "./actions/user.actions";
+import { account, OAuthProvider } from "./appwrite";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  ...authConfig,
-  session: {
-    strategy: "jwt",
-  },
-  pages: {
-    signIn: "/auth/sign-in",
-  },
-  callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      if (account?.provider === "google") {
-        const findUser = await userExists(user.email as string);
-        if (!findUser) {
-          const signedUp = await signUp({
-            email: user.email!,
-            password: "googleAuthPlaceholder",
-            username: user.name!,
-          });
+export const loginInWithGoogle = async () => {
+  try {
+    const session = account.createOAuth2Session(OAuthProvider.Google);
+    console.log("session is", session);
+  } catch (error) {
+    console.log("could not login with google", error);
+  }
+};
 
-          console.log(signedUp);
-        } else if (findUser) {
-          const signedIn = await SignIn({
-            email: user.email!,
-          });
-          console.log("signed in user", signedIn);
-        }
-      }
-      return true;
-    },
+export const logoutUser = async () => {
+  try {
+    await account.deleteSession("current");
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-    async jwt({ token, user }) {
-      if (user) {
-      }
-      return token;
-    },
-
-    async session({ session, token }) {
-      if (token) {
-      }
-      return session;
-    },
-    redirect() {
-      return "/sign-up";
-    },
-  },
-});
+export const getUser = async () => {
+  try {
+    return await account.get();
+  } catch (error) {
+    console.error(error);
+  }
+};
