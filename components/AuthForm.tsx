@@ -14,7 +14,6 @@ import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import { SignIn, signUp } from "@/lib/actions/user.actions"
 import { useRouter } from "next/navigation"
-import GoogleSignUp from "./GoogleSignUp"
 import React from "react"
 
 
@@ -119,9 +118,6 @@ const AuthForm = ({ type }: { type: string }) => {
                     </div>
                 </form>
             </Form>
-            <div className="flex justify-center">
-                <GoogleSignUp />
-            </div>
             <footer className='flex justify-center gap-1'>
                 <p className='text-[14px] leading-[14px] font-normal text-gray-600'>{type === "sign-in"
                     ? "Don't have an account?"

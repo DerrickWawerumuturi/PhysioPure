@@ -1,8 +1,4 @@
 'use client'
-<<<<<<< HEAD
-=======
-import { getUser } from '@/lib/auth'
->>>>>>> 5399d61b273ba070b6b5e553e8f451bb803c7fa5
 import { cn } from '@/lib/utils'
 import { UserButton, useUser } from '@clerk/nextjs'
 import Link from 'next/link'
@@ -13,21 +9,6 @@ const Page = () => {
     const { user, isSignedIn } = useUser()
     const currentPathname = usePathname()
 
-<<<<<<< HEAD
-=======
-    useEffect(() => {
-        const fetchUser = async () => {
-            const user: User = await getUser()
-            if (user === null) {
-                setUser(null)
-            }
-            setUser(user)
-        }
-        fetchUser()
-    }, [])
-
-
->>>>>>> 5399d61b273ba070b6b5e553e8f451bb803c7fa5
     if (user === null) {
         return (
             <div />

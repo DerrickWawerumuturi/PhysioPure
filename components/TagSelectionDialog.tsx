@@ -14,11 +14,7 @@ import { createPost } from '@/types';
 import { generateSlug, simplifyContent } from '@/lib/utils';
 import Success from './Success';
 import TagForm from './forms/TagForm';
-<<<<<<< HEAD
 import { useUser } from '@clerk/nextjs';
-=======
-import { getUser } from '@/lib/auth';
->>>>>>> 5399d61b273ba070b6b5e553e8f451bb803c7fa5
 
 interface TagSelectionDialogProps {
     open: boolean;
@@ -48,16 +44,6 @@ const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
 
     const { user, isSignedIn } = useUser()
 
-<<<<<<< HEAD
-=======
-    useEffect(() => {
-        const getLoggedinUser = async () => {
-            const user = await getUser()
-            setUser(user)
-        }
-        getLoggedinUser()
-    }, [])
->>>>>>> 5399d61b273ba070b6b5e553e8f451bb803c7fa5
 
     const handleBlog = async (type: "blog" | "article") => {
         // svae the blog to database, making sure to add he title and subtitle or preview from alert content

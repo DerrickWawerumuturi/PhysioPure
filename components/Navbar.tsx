@@ -4,41 +4,16 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { Categories, cn } from '@/lib/utils'
-<<<<<<< HEAD
 import { buttonVariants } from './ui/button'
 import { Edit } from 'lucide-react'
 import { ModeToggle } from './ModeToggle'
 import { UserButton, useUser } from '@clerk/nextjs'
-=======
-import UserAccount from './UserAccount'
-import { buttonVariants } from './ui/button'
-import { Edit } from 'lucide-react'
-import { ModeToggle } from './ModeToggle'
 import MobileNav from './MobileNav'
-import { getUser } from '@/lib/auth'
->>>>>>> 5399d61b273ba070b6b5e553e8f451bb803c7fa5
 
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false)
-<<<<<<< HEAD
     const { user, isSignedIn } = useUser()
-=======
-    const [user, setUser] = useState<string | null>(null)
-
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            const user = await getUser()
-            if (user === null) {
-                setUser(null)
-            } else {
-                setUser(user.name)
-            }
-        }
-        fetchUser()
-    }, [])
->>>>>>> 5399d61b273ba070b6b5e553e8f451bb803c7fa5
 
     return (
         <div className='shadow p-2 top-0'>
@@ -57,7 +32,7 @@ const Navbar = () => {
                         PhysioPure
                     </h1>
                 </Link>
-                <MobileNav user={user as string} />
+                <MobileNav />
                 <div className='sm:hidden lg:flex space-x-7 lg:pl-96 text-lg  text-gray-700 font-semibold mt-3'>
 
                     <div

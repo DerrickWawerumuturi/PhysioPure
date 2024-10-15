@@ -2,16 +2,15 @@
 
 import { logoutUser } from "@/lib/auth"
 import { Categories } from "@/lib/utils"
+import { SignedOut, useUser } from "@clerk/nextjs"
 import { BookA, BookHeadphones, BookOpenCheck, LogOut, Menu, NotebookTabs, X } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
-interface MobileNavProps {
-    user: string | null
-}
 
-const MobileNav = ({ user }: MobileNavProps) => {
+const MobileNav = () => {
+    const { user, isSignedIn } = useUser()
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [showList, setShowList] = useState<boolean>(false)
     const pathname = usePathname()
@@ -30,6 +29,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
         closeOnCurrent(href)
         setShowList(!showList)
     }
+
 
     useEffect(() => {
         if (isOpen) {
@@ -116,12 +116,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                                         <span className="pl-2">Write</span>
                                     </Link>
                                     <div className='flow-root items-center ml-6'>
-                                        <button
-                                            type="button"
-                                            onClick={logoutUser}
-                                        >
-                                            <LogOut />
-                                        </button>
+                                        <SignedOut />
                                     </div>
                                 </div>
                             )}
