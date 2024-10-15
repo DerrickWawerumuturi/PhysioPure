@@ -8,13 +8,17 @@ import FileUploader from './FileUploader';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Input } from './ui/input';
-import { createBlogPost, createTag, getAllTags, updateBlogPost } from '@/lib/actions/blog.actions';
+import { createBlogPost } from '@/lib/actions/blog.actions';
 import { Block, BlockNoteEditor } from '@blocknote/core';
 import { createPost } from '@/types';
 import { generateSlug, simplifyContent } from '@/lib/utils';
 import Success from './Success';
 import TagForm from './forms/TagForm';
+<<<<<<< HEAD
 import { useUser } from '@clerk/nextjs';
+=======
+import { getUser } from '@/lib/auth';
+>>>>>>> 5399d61b273ba070b6b5e553e8f451bb803c7fa5
 
 interface TagSelectionDialogProps {
     open: boolean;
@@ -32,7 +36,7 @@ interface TagSelectionDialogProps {
 }
 
 const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
-    open, onClose, isLoading, setIsLoading, blocks, setBlocks,
+    onClose, isLoading,
     title, subtitle, setTitle, setSubtitle, editor
 }) => {
     const router = useRouter();
@@ -44,6 +48,16 @@ const TagSelectionDialog: React.FC<TagSelectionDialogProps> = ({
 
     const { user, isSignedIn } = useUser()
 
+<<<<<<< HEAD
+=======
+    useEffect(() => {
+        const getLoggedinUser = async () => {
+            const user = await getUser()
+            setUser(user)
+        }
+        getLoggedinUser()
+    }, [])
+>>>>>>> 5399d61b273ba070b6b5e553e8f451bb803c7fa5
 
     const handleBlog = async (type: "blog" | "article") => {
         // svae the blog to database, making sure to add he title and subtitle or preview from alert content

@@ -5,6 +5,7 @@ import { createAdminClient, createSessionClient } from "../appwrite.config";
 import { Account, Client, ID, OAuthProvider, Query } from "node-appwrite";
 import { parseStringify } from "../utils";
 import { signInProps, SignUpParams } from "@/types";
+import { account } from "../appwrite";
 
 export type PlainUser = {
   $id: string;
@@ -104,7 +105,10 @@ export const SignIn = async ({ email, password }: signInProps) => {
   }
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5399d61b273ba070b6b5e553e8f451bb803c7fa5
 export async function userExists(email: string) {
   try {
     const { database } = await createAdminClient();
@@ -138,6 +142,7 @@ export const logOut = async () => {
   try {
     const { account } = await createSessionClient();
     cookies().delete("appwrite-session");
+    cookies().delete("current");
 
     await account.deleteSession("current");
   } catch (error) {

@@ -7,7 +7,8 @@ import { Bookmark, LogOut, Settings, User } from "lucide-react"
 import Profile from "./Profile"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { getLoggedInUser, logOut } from "@/lib/actions/user.actions"
+import { logOut } from "@/lib/actions/user.actions"
+import { getUser } from "@/lib/auth"
 
 const UserAccount = () => {
     const [user, setUser] = useState<string | null>(null)
@@ -24,7 +25,7 @@ const UserAccount = () => {
     }
     useEffect(() => {
         const fetchUser = async () => {
-            const user = await getLoggedInUser()
+            const user = await getUser()
             if (user === null) {
                 setEmail(null)
                 setUser(null)

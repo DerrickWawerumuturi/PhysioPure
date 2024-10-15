@@ -1,5 +1,4 @@
 'use client'
-import { User } from "@/types";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import Image from "next/image";
@@ -10,13 +9,11 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 
 
-
 export default function Home() {
   const { theme } = useTheme()
 
-
   return (
-    <div className="h-screen max-h-screen py-20 mx-auto text-center flex flex-col items-center max-w-3xl">
+    <div className="h-screen max-h-screen py-20 mx-auto text-center flex flex-col items-center max-w-3xl sm:overflow-x-hidden md:overflow-x-visible">
       <h1 className={cn("text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl mt-7", {
         "text-red-500": theme === 'dark'
       })}>
@@ -47,10 +44,10 @@ export default function Home() {
           alt="examples"
           width={1500}
           height={1500}
-          className="w-full max-w-sm sm:max-w-sm md:max-w-md rounded-md"
+          className="w-full max-w-sm sm:max-w-xs md:max-w-md rounded-md"
         />
       </div>
-      <div className={cn("flex gap-10 lg:pl-10 sm:mb-16 lg:mb-28 mt-36", {
+      <div className={cn("sm:flex-col sm:gap-5 lg:flex-row lg:gap-10 lg:pl-10 sm:mb-16 lg:mb-28 mt-36", {
         "text-green-400": theme === "dark"
       })}>
         <Bookmarks
@@ -70,7 +67,7 @@ export default function Home() {
         />
       </div>
       <div className="mt-24 flex flex-col gap-2">
-        <h2 className="font-bold sm:text-5xl lg:text-4xl antialiased tracking-tight sm:text-center lg:pl-3 pb-2 lg:pb-5">Latest from the team</h2>
+        <h2 className="font-bold sm:text-5xl lg:text-4xl antialiased tracking-tight sm:text-center lg:pl-3 pb-2 lg:pb-5">Latest <span className="sm:hidden lg:block">from the team</span></h2>
         <ArticleBox />
       </div>
       <div className="flex mt-10">
