@@ -1,5 +1,5 @@
 {
-  "name": "insights",
+  "name": "PhysioPure",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -31,11 +31,7 @@
     "@tiptap/extension-text": "^2.6.6",
     "@tiptap/react": "^2.6.6",
     "@tiptap/starter-kit": "^2.6.6",
-<<<<<<< HEAD
-    "appwrite": "^15.0.0",
-=======
     "appwrite": "^16.0.2",
->>>>>>> 5399d61b273ba070b6b5e553e8f451bb803c7fa5
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
