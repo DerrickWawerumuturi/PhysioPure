@@ -39,7 +39,7 @@ const Page = () => {
     }
 
     return (
-        <div className="greed-feed">
+        <div className="greed-feed sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {blogs.map((blog, index) => (
                 <div
                     key={index}
