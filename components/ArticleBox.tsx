@@ -86,7 +86,7 @@ const ArticleBox = () => {
                             {Capitalize(blog.subtitle)}
                         </p>
                         <div className='flex-grow' />
-                        <div className="flex sm:flex-row gap-2 text-sm font-sm text-gray-500 bottom-0">
+                        <div className="flex justify-between text-sm font-sm text-gray-500 bottom-0">
                             {users.map((user, index) => (
                                 <p key={index}>{user?.username}</p>
                             ))}
