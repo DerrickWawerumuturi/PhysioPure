@@ -79,7 +79,7 @@ const MobileNav = () => {
                                     <span className="pl-2">Categories</span>
                                 </button>
                                 {showList && (
-                                    <ul className="grid grid-cols-2 gap-y-2 gap-x-3 border border-gray-400 rounded-lg p-4">
+                                    <ul className="grid grid-cols-2 gap-y-1 gap-x-1 border border-gray-400 rounded-lg p-4">
                                         {Categories.map((category, index) => (
                                             <li key={index} className="">
                                                 <Link
@@ -111,9 +111,9 @@ const MobileNav = () => {
 
                             {user && (
                                 <div className="flex flex-col">
-                                    <Link href="/new-story">
+                                    <Link href="/new-story" className="flex gap-2">
                                         <BookOpenCheck className="h-6 w-6" />
-                                        <span className="pl-2">Write</span>
+                                        <h2 className="pl-2">Write</h2>
                                     </Link>
                                     <div className='flow-root items-center ml-6'>
                                         <SignedOut />
