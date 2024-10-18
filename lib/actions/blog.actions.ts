@@ -69,7 +69,7 @@ export const updateBlogPost = async (data: updatePost) => {
       data.postId,
       data.updatedContent
     );
-    return parseStringify(updateBlogPost);
+    return parseStringify(updatedPost);
   } catch (error) {
     console.log("could not update post");
   }
@@ -91,15 +91,17 @@ export const getSpecificPost = async (slug: string | string[]) => {
 
 export const getAllPosts = async () => {
   const { database } = await createAdminClient();
+  console.log(BLOG_COLLECTION_ID!);
   try {
     const blogs = await database.listDocuments(
       DATABASE_ID!,
       BLOG_COLLECTION_ID!,
       [Query.orderDesc("updatedAt")]
     );
+    console.log("database blogs", blogs);
     return parseStringify(blogs.documents);
   } catch (error) {
-    console.log("could not get blogs");
+    console.log("could not get blogs", error);
   }
 };
 
@@ -111,6 +113,7 @@ export const getTop6Posts = async () => {
       BLOG_COLLECTION_ID!,
       [Query.orderDesc("updatedAt"), Query.limit(6)]
     );
+    console.log("database top 6", blogs);
     return parseStringify(blogs.documents);
   } catch (error) {
     console.log("could not get blogs");

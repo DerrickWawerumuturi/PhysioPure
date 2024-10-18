@@ -20,7 +20,7 @@ const ArticleBox = () => {
         const getAllBlogs = async () => {
             try {
                 const blogPosts: BlogProps[] = await getTop6Posts()
-                blogPosts.forEach(async (post) => {
+                blogPosts?.forEach(async (post) => {
                     const authorId = post.author_id
                     const user: User[] = await getUserById(authorId)
                     setUsers(user)
@@ -28,7 +28,7 @@ const ArticleBox = () => {
 
                 setBLogs(blogPosts)
             } catch (error) {
-                console.error("Error gettign all blogs")
+                console.error("Error gettign all blogs", error)
             } finally {
                 setIsLoading(false)
             }
@@ -40,7 +40,6 @@ const ArticleBox = () => {
         router.push(`/blog/${slug}`)
 
     }
-
 
     if (isLoading) {
         return (
@@ -61,7 +60,7 @@ const ArticleBox = () => {
 
     return (
         <div className="greed-feed">
-            {blogs.map((blog, index) => (
+            {blogs?.map((blog, index) => (
                 <div
                     key={index}
                     className={cn("relative rounded-xl shadow-lg overflow-hidden flex flex-col grid-expand hover:cursor-pointer", {
