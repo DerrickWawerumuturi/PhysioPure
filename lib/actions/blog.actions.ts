@@ -91,14 +91,12 @@ export const getSpecificPost = async (slug: string | string[]) => {
 
 export const getAllPosts = async () => {
   const { database } = await createAdminClient();
-  console.log(BLOG_COLLECTION_ID!);
   try {
     const blogs = await database.listDocuments(
       DATABASE_ID!,
       BLOG_COLLECTION_ID!,
       [Query.orderDesc("updatedAt")]
     );
-    console.log("database blogs", blogs);
     return parseStringify(blogs.documents);
   } catch (error) {
     console.log("could not get blogs", error);
@@ -113,7 +111,6 @@ export const getTop6Posts = async () => {
       BLOG_COLLECTION_ID!,
       [Query.orderDesc("updatedAt"), Query.limit(6)]
     );
-    console.log("database top 6", blogs);
     return parseStringify(blogs.documents);
   } catch (error) {
     console.log("could not get blogs");
@@ -129,7 +126,6 @@ export const getPostsWithTags = async (tag: string) => {
       BLOG_COLLECTION_ID!,
       [Query.equal("tags", tag)]
     );
-    console.log("any related posts?", relatedPosts.total);
     return parseStringify(relatedPosts.documents);
   } catch (error) {
     console.log("could not get blogs related to the tag given", error);
@@ -165,7 +161,6 @@ export const getAllTags = async () => {
   const { database } = await createAdminClient();
   try {
     const tags = await database.listDocuments(DATABASE_ID!, TAG_COLLECTION_ID!);
-    console.log(tags);
     return parseStringify(tags);
   } catch (error) {
     console.log("failed to fetch tags", error);

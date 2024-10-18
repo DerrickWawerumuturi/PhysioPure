@@ -32,7 +32,7 @@ const Bookmarks = ({ name, description, attribute }: bookMarkProps) => {
                 <h2 className='text-start font-semibold text-xl antialiased tracking-tight break-words'>
                     {name}
                 </h2>
-                <p className={cn('sm:hidden lg:flex font-normal text-lg tracking-tight break-words text-center', {
+                <p className={cn('lg:flex font-normal text-lg tracking-tight break-words text-center', {
                     "text-white": theme === 'dark',
                     "text-gray-700": theme === 'light'
                 })}>

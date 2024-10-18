@@ -47,7 +47,7 @@ export default function Home() {
           className="w-full max-w-sm sm:max-w-xs md:max-w-md rounded-md"
         />
       </div>
-      <div className={cn("sm:flex-col sm:gap-5 lg:flex-row lg:gap-10 lg:pl-10 sm:mb-16 lg:mb-28 mt-36", {
+      <div className={cn("sm:flex-col md:flex-row sm:gap-5 lg:flex-row lg:gap-10 lg:pl-10 sm:mb-16 lg:mb-28 mt-24", {
         "text-green-400": theme === "dark"
       })}>
         <Bookmarks
@@ -68,7 +68,10 @@ export default function Home() {
       </div>
       <div className="mt-24 flex flex-col gap-2">
         <h2 className="font-bold sm:text-5xl lg:text-4xl antialiased tracking-tight sm:text-center lg:pl-3 pb-2 lg:pb-5">Latest <span className="sm:hidden lg:block">from the team</span></h2>
-        <ArticleBox />
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <ArticleBox />
+        </div>
+
       </div>
       <div className="flex mt-10">
         <Link

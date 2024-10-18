@@ -43,7 +43,7 @@ const ArticleBox = () => {
 
     if (isLoading) {
         return (
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-lg lg:max-w-7xl'>
+            <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-lg lg:max-w-7xl'>
                 {[...Array(6).map((_, index) => (
                     <div key={index} className='rounded-xl shadow-lg overflow-hidden h-[400px] flex flex-col animate-pulse'>
                         <div className='relative w-full h-48 bg-gray-300' />
@@ -59,7 +59,7 @@ const ArticleBox = () => {
     }
 
     return (
-        <div className="greed-feed">
+        <div className="greed-feed sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {blogs?.map((blog, index) => (
                 <div
                     key={index}
